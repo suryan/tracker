@@ -7,8 +7,9 @@ class SqlQueryBinding extends Base {
 	protected $table = 'tracker_sql_query_bindings';
 
 	protected $fillable = array(
-		'sha1',
-		'serialized',
+		'sql_query_bindings_id',
+		'name',
+		'value',
 	);
 
 }

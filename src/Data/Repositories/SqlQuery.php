@@ -129,13 +129,15 @@ class SqlQuery extends Repository {
 			$bindingsSerialized = $this->serializeBindings($bindings);
 
 			$sqlQuery_bindings_id = $this->sqlQueryBindingRepository->findOrCreate(
-				array('sha1' => sha1($bindingsSerialized), 'serialized' => $bindingsSerialized),
+				array('sha1' => sha1($bindingsSerialized), 'serialized' => $bindingsSerialized,
+					'sql_query_id' => $sqlQueryId,),
 				array('sha1'),
 				$created
 			);
 
 			if ($created)
 			{
+				$place = 1;
 				foreach ($bindings as $parameter => $value)
 				{
 					$this->sqlQueryBindingParameterRepository->create(
@@ -144,11 +146,12 @@ class SqlQuery extends Repository {
 
 							// unfortunately laravel uses question marks,
 							// but hopefully someday this will change
-							'name'                  => '?',
+							'name'                  => $place,
 
 							'value'                 => $value,
 						)
 					);
+					$place++;
 				}
 			}
 		}
